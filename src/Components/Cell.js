@@ -1,13 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { COVERED_BOMB_CELL, leftClickCell, rightClickCell } from '../store';
+import { COVERED_CELL, leftClickCell, QUESTION_MARK_CELL, RED_FLAG_CELL, rightClickCell, UNCOVERED_CELL } from '../store';
 import './styles/Cell.css';
 const DisconnectedCell = props => {
 
   let className = 'cell';
-  if (props.cell.state === COVERED_BOMB_CELL) {
+  if (props.cell.isBomb) {
     className = 'bomb ' + className
   }
+  switch (props.cell.state) {
+    case UNCOVERED_CELL:
+      className += ' uncovered'; break;
+    case COVERED_CELL:
+      className += ' covered'; break;
+    case RED_FLAG_CELL:
+      className += ' flagged'; break;
+    case QUESTION_MARK_CELL:
+      className += ' questioned'; break;
+    default:
+      break;
+  }
+
 
   return (
     <td className={className}

@@ -1,10 +1,13 @@
-import { applyMiddleware, combineReducers, createStore } from "redux";
+import { applyMiddleware, createStore } from "redux";
+import { composeWithDevTools } from 'redux-devtools-extension';
 import logger from 'redux-logger';
-
-const initialBoardState = {
-  grid: [],
-  width: 3,
-  height: 5,
+const initialState = {
+  board: {
+    grid: [],
+    width: 3,
+    height: 5,
+  },
+  gameOver: false,
 }
 
 const BUILD_BOARD = 'BUILD_BOARD';
@@ -25,41 +28,83 @@ export const rightClickCell = (row, col) => ({
 })
 
 export const
-  COVERED_NORMAL_CELL = 1,
-  COVERED_BOMB_CELL = 2,
-  NORMAL_UNCOVERED_CELL = 3;
+  COVERED_CELL = 1,
+  UNCOVERED_CELL = 3,
+  CLICKED_BOMB_CELL = 5,
+  RED_FLAG_CELL = 6,
+  QUESTION_MARK_CELL = 7;
 
 
 const cellCycler = (cell, type) => {
-  console.log('cycler', cell, type);
-  switch (cell.state) {
-    case COVERED_NORMAL_CELL:
-      return { state: NORMAL_UNCOVERED_CELL };
-    default:
-      return cell;
+  // can assume they didn't left click the
+  if (type === LEFT_CLICK_CELL) {
+    switch (cell.state) {
+      case COVERED_CELL:
+        return { ...cell, state: UNCOVERED_CELL };
+      default:
+        return cell;
+    }
+  } else { // right click
+    switch (cell.state) {
+      case COVERED_CELL:
+        return { ...cell, state: RED_FLAG_CELL }
+      case RED_FLAG_CELL:
+        return { ...cell, state: QUESTION_MARK_CELL }
+      case QUESTION_MARK_CELL:
+        return { ...cell, state: COVERED_CELL }
+      default:
+        return cell;
+    }
+
   }
+
 }
 
 
-const boardReducer = (state = initialBoardState, action) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case BUILD_BOARD:
-      return { ...state, grid: createBoardWithBombs(state.width, state.height, 10) };
+      return {
+        ...state, board: {
+          ...state.board,
+          grid: createBoardWithBombs(state.board.width, state.board.height, 5)
+        },
+      }
     case LEFT_CLICK_CELL:
     case RIGHT_CLICK_CELL:
-      return {
-        ...state, grid: state.grid.map((row, rowIdx) => row.map((cell, colIdx) => {
-          if (rowIdx === action.row && colIdx === action.col) {
-            return cellCycler(cell, action.type);
+      {
+        const clickedCell = state.board.grid[action.row][action.col];
+        if (clickedCell.isBomb && clickedCell.state === COVERED_CELL && action.type === LEFT_CLICK_CELL) {
+          // GAME OVER
+          clickedCell.state = CLICKED_BOMB_CELL;
+          return {
+            ...state, gameOver: true, board: {
+              ...state.board, grid: state.board.grid.map((row, rowIdx) => row.map((cell, colIdx) => {
+                if (cell.isBomb && cell.state === COVERED_CELL) {
+                  return { ...cell, state: UNCOVERED_CELL }
+                }
+                return { ...cell };
+              }))
+            }
           }
-          return cell;
-        }))
+        }
+        return {
+          ...state, board: {
+            ...state.board, grid: state.board.grid.map((row, rowIdx) => row.map((cell, colIdx) => {
+              if (rowIdx === action.row && colIdx === action.col) {
+                return cellCycler(cell, action.type);
+              }
+              return { ...cell };
+            }))
+          }
+        }
+
       }
+
     default:
       return state;
   }
 }
-
 // create all the rows
 // gen random locations
 // if bomb, skip. otherwise place bomb and update neighbors
@@ -74,16 +119,16 @@ const createBoardWithBombs = (width, height, bombCount) => {
       row = Math.random() * height | 0
     const cell = grid[row][col];
     // if it's already a bomb, loop again
-    if (cell.state === COVERED_BOMB_CELL) {
+    if (cell.isBomb) {
       continue;
     }
     // place and make sure we decrement
-    cell.state = COVERED_BOMB_CELL;
+    cell.isBomb = true;
     bombCount--;
     // then let's update all the neighbors as long as normal cell
     getValidNeighborArray(row, col, width, height)
       .map(pair => grid[pair[0]][pair[1]])
-      .filter(cell => cell.state === COVERED_NORMAL_CELL)
+      .filter(cell => !cell.isBomb)
       .forEach(cell => cell.bombNeighbors++);
   }
   return grid;
@@ -102,19 +147,18 @@ const getValidNeighborArray = (row, col, width, height) => {
 
 const newArray = n => Array(n).fill(0).map(() => (
   {
-    state: COVERED_NORMAL_CELL,
+    state: COVERED_CELL,
     bombNeighbors: 0,
+    isBomb: false,
   }
 ))
 
-const superReducer = combineReducers({
-  board: boardReducer,
-})
+console.log(createBoardWithBombs(10, 10, 5));
 
-export default createStore(superReducer,
-  // composeWithDevTools(
-  applyMiddleware(
-    logger
+export default createStore(reducer,
+  composeWithDevTools(
+    applyMiddleware(
+      logger
+    )
   )
-  // )
 );

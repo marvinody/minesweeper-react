@@ -5,5 +5,20 @@ td {
 }
 
 .bomb.cell {
-  background-color:red;
+  outline-color:red;
+}
+
+.covered.cell {
+  background-color:black;
+}
+.uncovered.cell {
+  background-color:white;
+}
+
+.flagged.cell {
+  background-color:palevioletred;
+}
+
+.questioned.cell {
+  background-color:yellow;
 }
