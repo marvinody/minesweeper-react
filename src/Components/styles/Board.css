@@ -1,0 +1,15 @@
+.board{
+  display:flex;
+  justify-content: center;
+}
+.board.border {
+  display:inline-block;
+  border: 1px solid black;
+}
+h1 {
+  text-align:center;
+}
+.row {
+  display:flex;
+  justify-content: center;
+}

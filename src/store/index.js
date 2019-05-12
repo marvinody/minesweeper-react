@@ -4,8 +4,8 @@ import logger from 'redux-logger';
 const initialState = {
   board: {
     grid: [],
-    width: 3,
-    height: 5,
+    width: 10,
+    height: 10,
   },
   gameOver: false,
 }
@@ -67,7 +67,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state, board: {
           ...state.board,
-          grid: createBoardWithBombs(state.board.width, state.board.height, 5)
+          grid: createBoardWithBombs(state.board.width, state.board.height, 20)
         },
       }
     case LEFT_CLICK_CELL:

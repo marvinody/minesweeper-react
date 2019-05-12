@@ -1,18 +1,10 @@
-.board{
-  display:flex;
-  flex-direction:column;
-}
-.row {
-  display:flex;
-}
 .bomb.cell {
-  border: 1px solid red;
+
 }
 .cell {
   background: url('/sprites.png') no-repeat;
   width:16px;
   height:16px;
-  border:1px solid black;
 }
 .covered.cell {
   background-position: -2px -53px;
@@ -51,4 +43,10 @@
 
 .questioned.cell {
   background-position: -53px -53px;
+}
+.uncovered.bomb.cell {
+  background-position: -87px -53px;
+}
+.clicked.bomb.cell {
+  background-position: -104px -53px;
 }

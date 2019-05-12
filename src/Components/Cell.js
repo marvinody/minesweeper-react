@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { COVERED_CELL, leftClickCell, QUESTION_MARK_CELL, RED_FLAG_CELL, rightClickCell, UNCOVERED_CELL } from '../store';
+import { CLICKED_BOMB_CELL, COVERED_CELL, leftClickCell, QUESTION_MARK_CELL, RED_FLAG_CELL, rightClickCell, UNCOVERED_CELL } from '../store';
 import './styles/Cell.css';
 const DisconnectedCell = props => {
 
@@ -21,6 +21,8 @@ const DisconnectedCell = props => {
       className += ' flagged'; break;
     case QUESTION_MARK_CELL:
       className += ' questioned'; break;
+    case CLICKED_BOMB_CELL:
+      className += ' clicked'; break;
     default:
       break;
   }

@@ -9,7 +9,6 @@ class DisconnectedApp extends React.Component {
     return (
       <div>
         <h1>HELLO WORLD</h1>
-        <h2>{this.props.text}</h2>
         <Board />
       </div>
     );
@@ -20,7 +19,7 @@ class DisconnectedApp extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  text: 'hey',
+
 })
 
 const mapDispatchToProps = dispatch => ({
