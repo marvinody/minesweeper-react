@@ -74,12 +74,17 @@ const reducer = (state = initialState, action) => {
     case RIGHT_CLICK_CELL:
       {
         const clickedCell = state.board.grid[action.row][action.col];
-        if (clickedCell.isBomb && clickedCell.state === COVERED_CELL && action.type === LEFT_CLICK_CELL) {
+        // if we left click a covered bomb
+        if (clickedCell.isBomb
+          && clickedCell.state === COVERED_CELL
+          && action.type === LEFT_CLICK_CELL) {
           // GAME OVER
+          // make this one clicked so it'll display differently
           clickedCell.state = CLICKED_BOMB_CELL;
           return {
             ...state, gameOver: true, board: {
               ...state.board, grid: state.board.grid.map((row, rowIdx) => row.map((cell, colIdx) => {
+                // make any bomb cells uncovered
                 if (cell.isBomb && cell.state === COVERED_CELL) {
                   return { ...cell, state: UNCOVERED_CELL }
                 }
@@ -88,23 +93,49 @@ const reducer = (state = initialState, action) => {
             }
           }
         }
+        const newGrid = copyGrid(state.board.grid);
+        const oldCell = state.board.grid[action.row][action.col];
+        // now if we clicked on "empty" cell, floodfill outwards
+        if (action.type === LEFT_CLICK_CELL
+          && oldCell.state === COVERED_CELL
+          && oldCell.bombNeighbors === 0) {
+          floodfill(newGrid, action.row, action.col);
+        } else {
+          newGrid[action.row][action.col] = cellCycler(oldCell, action.type);
+        }
         return {
           ...state, board: {
-            ...state.board, grid: state.board.grid.map((row, rowIdx) => row.map((cell, colIdx) => {
-              if (rowIdx === action.row && colIdx === action.col) {
-                return cellCycler(cell, action.type);
-              }
-              return { ...cell };
-            }))
+            ...state.board, grid: newGrid,
           }
         }
-
       }
-
     default:
       return state;
   }
 }
+
+const floodfill = (grid, row, col) => {
+  const
+    height = grid.length,
+    width = grid[0].length,
+    queue = [];
+  queue.push([row, col]);
+  while (queue.length > 0) {
+    const [curRow, curCol] = queue.shift();
+    const cell = grid[curRow][curCol];
+    if (cell.state === COVERED_CELL) {
+      cell.state = UNCOVERED_CELL;
+      if (cell.bombNeighbors === 0) {
+        getValidNeighborArray(curRow, curCol, width, height).forEach(
+          pair => queue.push(pair)
+        )
+      }
+    }
+  }
+}
+
+const copyGrid = grid => grid.map(row => row.map(cell => ({ ...cell })))
+
 // create all the rows
 // gen random locations
 // if bomb, skip. otherwise place bomb and update neighbors
@@ -154,7 +185,6 @@ const newArray = n => Array(n).fill(0).map(() => (
   }
 ))
 
-console.log(createBoardWithBombs(10, 10, 5));
 
 export default createStore(reducer,
   composeWithDevTools(

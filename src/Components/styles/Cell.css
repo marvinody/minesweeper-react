@@ -6,6 +6,9 @@
   width:16px;
   height:16px;
 }
+.bomb {
+  outline:1px red solid;
+}
 .covered.cell {
   background-position: -2px -53px;
 }
