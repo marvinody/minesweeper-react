@@ -1,24 +1,54 @@
-td {
-  width:20px;
-  height:20px;
-  outline:1px solid black;
+.board{
+  display:flex;
+  flex-direction:column;
 }
-
+.row {
+  display:flex;
+}
 .bomb.cell {
-  outline-color:red;
+  border: 1px solid red;
 }
-
+.cell {
+  background: url('/sprites.png') no-repeat;
+  width:16px;
+  height:16px;
+  border:1px solid black;
+}
 .covered.cell {
-  background-color:black;
+  background-position: -2px -53px;
 }
-.uncovered.cell {
-  background-color:white;
+.uncovered.cell.num0 {
+  background-position: -19px -53px;
+}
+.uncovered.cell.num1 {
+  background-position: -2px -70px;
+}
+.uncovered.cell.num2 {
+  background-position: -19px -70px;
+}
+.uncovered.cell.num3 {
+  background-position: -36px -70px;
+}
+.uncovered.cell.num4 {
+  background-position: -53px -70px;
+}
+.uncovered.cell.num5 {
+  background-position: -70px -70px;
+}
+.uncovered.cell.num6 {
+  background-position: -87px -70px;
+}
+.uncovered.cell.num7 {
+  background-position: -104px -70px;
+}
+.uncovered.cell.num8 {
+  background-position: -121px -70px;
 }
 
 .flagged.cell {
-  background-color:palevioletred;
+  background-position: -36px -53px;
 }
 
 .questioned.cell {
-  background-color:yellow;
+  background-position: -53px -53px;
 }

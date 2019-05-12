@@ -10,7 +10,11 @@ const DisconnectedCell = props => {
   }
   switch (props.cell.state) {
     case UNCOVERED_CELL:
-      className += ' uncovered'; break;
+      className += ' uncovered'
+      if (!props.cell.isBomb) {
+        className += ` num${props.cell.bombNeighbors}`
+      }
+      break;
     case COVERED_CELL:
       className += ' covered'; break;
     case RED_FLAG_CELL:
@@ -23,10 +27,10 @@ const DisconnectedCell = props => {
 
 
   return (
-    <td className={className}
+    <div className={className}
       onClick={(e) => { e.preventDefault(); props.leftClick(props.row, props.col) }}
       onContextMenu={(e) => { e.preventDefault(); props.rightClick(props.row, props.col) }}
-    >{props.cell.bombNeighbors > 0 ? props.cell.bombNeighbors : ''}</td >
+    >{props.cell.bombNeighbors > 0 ? '' : ''}</div >
   )
 }
 
