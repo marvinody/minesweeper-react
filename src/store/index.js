@@ -124,6 +124,7 @@ const createBoardWithBombs = (width, height, bombCount) => {
     }
     // place and make sure we decrement
     cell.isBomb = true;
+    cell.bombNeighbors = 0;
     bombCount--;
     // then let's update all the neighbors as long as normal cell
     getValidNeighborArray(row, col, width, height)

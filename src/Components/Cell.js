@@ -26,7 +26,7 @@ const DisconnectedCell = props => {
     <td className={className}
       onClick={(e) => { e.preventDefault(); props.leftClick(props.row, props.col) }}
       onContextMenu={(e) => { e.preventDefault(); props.rightClick(props.row, props.col) }}
-    ></td >
+    >{props.cell.bombNeighbors > 0 ? props.cell.bombNeighbors : ''}</td >
   )
 }
 
