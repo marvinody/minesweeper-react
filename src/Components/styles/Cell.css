@@ -3,3 +3,7 @@ td {
   height:20px;
   outline:1px solid black;
 }
+
+.bomb.cell {
+  background-color:red;
+}
