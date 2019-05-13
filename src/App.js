@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './App.css';
 import Board from './Components/Board';
+import Status from './Components/Status';
 import { buildBoard } from './store';
 
 class DisconnectedApp extends React.Component {
@@ -9,6 +10,7 @@ class DisconnectedApp extends React.Component {
     return (
       <div>
         <h1>HELLO WORLD</h1>
+        <Status />
         <Board />
       </div>
     );

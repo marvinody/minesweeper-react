@@ -1,0 +1,40 @@
+.clock {
+  display: flex;
+  justify-content: center;
+}
+.seven-seg{
+  background: url('/sprites.png') no-repeat;
+  height:23px;
+  width:13px;
+}
+.seven-seg.time1{
+  background-position: -2px -2px;
+}
+.seven-seg.time2{
+  background-position: -16px -2px;
+}
+.seven-seg.time3{
+  background-position: -30px -2px;
+}
+.seven-seg.time4{
+  background-position: -44px -2px;
+}
+.seven-seg.time5{
+  background-position: -58px -2px;
+}
+.seven-seg.time6{
+  background-position: -72px -2px;
+}
+.seven-seg.time7{
+  background-position: -86px -2px;
+}
+.seven-seg.time8{
+  background-position: -100px -2px;
+}
+.seven-seg.time9{
+  background-position: -114px -2px;
+}
+.seven-seg.time0{
+  background-position: -128px -2px;
+}
+
