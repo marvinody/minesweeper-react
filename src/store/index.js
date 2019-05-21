@@ -27,6 +27,7 @@ export const rightClickCell = (row, col) => ({
   row, col,
 })
 
+//lesson learned, do not use numbers manually. make iota fn that does this
 export const
   COVERED_CELL = 1,
   UNCOVERED_CELL = 3,
@@ -36,7 +37,7 @@ export const
 
 
 const cellCycler = (cell, type) => {
-  // can assume they didn't left click the
+  // can assume they didn't left click the bomb cell cause it would be game over
   if (type === LEFT_CLICK_CELL) {
     switch (cell.state) {
       case COVERED_CELL:
