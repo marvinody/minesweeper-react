@@ -7,7 +7,7 @@ const initialState = {
     width: 10,
     height: 10,
   },
-  initialBombs: 20,
+  initialBombs: 2,
   gameOver: false,
 }
 
@@ -74,6 +74,9 @@ const reducer = (state = initialState, action) => {
       }
     case LEFT_CLICK_CELL:
     case RIGHT_CLICK_CELL:
+      if (state.gameOver) {
+        return state;
+      }
       {
         const clickedCell = state.board.grid[action.row][action.col];
         // if we left click a covered bomb
@@ -108,13 +111,20 @@ const reducer = (state = initialState, action) => {
         return {
           ...state, board: {
             ...state.board, grid: newGrid,
-          }
+          },
+          gameOver: isGameDone(newGrid, state.initialBombs),
         }
       }
     default:
       return state;
   }
 }
+
+const isGameDone = (grid, totalBombs) => grid
+  .flat()
+  .filter(cell => cell.state !== UNCOVERED_CELL)
+  .length === totalBombs;
+
 
 const floodfill = (grid, row, col) => {
   const
