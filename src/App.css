@@ -1,0 +1,11 @@
+.app {
+  display:flex;
+  justify-content: center;
+  flex-direction:column;
+}
+#root {
+  display:flex;
+  width:100vw;
+  height:100vh;
+  justify-content: center;
+}

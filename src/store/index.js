@@ -7,6 +7,7 @@ const initialState = {
     width: 10,
     height: 10,
   },
+  initialBombs: 20,
   gameOver: false,
 }
 
@@ -68,7 +69,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state, board: {
           ...state.board,
-          grid: createBoardWithBombs(state.board.width, state.board.height, 20)
+          grid: createBoardWithBombs(state.board.width, state.board.height, state.initialBombs)
         },
       }
     case LEFT_CLICK_CELL:

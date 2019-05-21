@@ -4,7 +4,7 @@ import MineCounter from './MineCounter';
 import './styles/Status.css';
 
 const Status = () => (
-  <div>
+  <div className='status'>
     <Clock />
     <MineCounter />
   </div>

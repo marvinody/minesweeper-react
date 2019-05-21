@@ -1,4 +1,9 @@
-.clock {
+.status {
+  display:flex;
+  flex-direction:row;
+  justify-content: space-between;
+}
+.clock, .bomb-count {
   display: flex;
   justify-content: center;
 }
@@ -7,34 +12,34 @@
   height:23px;
   width:13px;
 }
-.seven-seg.time1{
+.num1{
   background-position: -2px -2px;
 }
-.seven-seg.time2{
+.num2{
   background-position: -16px -2px;
 }
-.seven-seg.time3{
+.num3{
   background-position: -30px -2px;
 }
-.seven-seg.time4{
+.num4{
   background-position: -44px -2px;
 }
-.seven-seg.time5{
+.num5{
   background-position: -58px -2px;
 }
-.seven-seg.time6{
+.num6{
   background-position: -72px -2px;
 }
-.seven-seg.time7{
+.num7{
   background-position: -86px -2px;
 }
-.seven-seg.time8{
+.num8{
   background-position: -100px -2px;
 }
-.seven-seg.time9{
+.num9{
   background-position: -114px -2px;
 }
-.seven-seg.time0{
+.num0{
   background-position: -128px -2px;
 }
 

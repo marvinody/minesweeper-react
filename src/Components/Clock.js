@@ -41,4 +41,4 @@ export default connect(
   }
 })
 
-const digitToClass = d => `seven-seg time${d}`
+const digitToClass = d => `seven-seg num${d}`
