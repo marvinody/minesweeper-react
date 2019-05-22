@@ -12,6 +12,9 @@
   height:23px;
   width:13px;
 }
+.placeholder {
+  background: none;
+}
 .num1{
   background-position: -2px -2px;
 }
@@ -43,3 +46,24 @@
   background-position: -128px -2px;
 }
 
+.emote {
+  background: url('/sprites.png') no-repeat;
+  height:26px;
+  width:26px;
+}
+
+.happy {
+  background-position: -2px -26px;
+}
+
+.happy:active {
+  background-position: -29px -26px;
+}
+
+.won {
+  background-position: -83px -26px;
+}
+
+.lost {
+  background-position: -110px -26px;
+}

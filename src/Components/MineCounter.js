@@ -18,6 +18,7 @@ export default connect(
     const tensDigit = this.props.totalBombs % 100 / 10 | 0;
     return (
       <div className='bomb-count'>
+        <div className='seven-seg placeholder'></div>
         <div className={digitToClass(tensDigit)}></div>
         <div className={digitToClass(onesDigit)}></div>
       </div>

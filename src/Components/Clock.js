@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { IS_PLAYING } from '../store';
 
 export default connect(
   state => ({
-    gameOver: state.gameOver,
+    gameStatus: state.gameStatus,
   }),
   dispatch => ({
 
@@ -16,7 +17,7 @@ export default connect(
       endTime: Date.now(),
     }
     const looper = () => {
-      if (!this.props.gameOver) {
+      if (this.props.gameStatus === IS_PLAYING) {
         this.setState({
           endTime: Date.now(),
         });

@@ -1,6 +1,13 @@
 import { applyMiddleware, createStore } from "redux";
 import { composeWithDevTools } from 'redux-devtools-extension';
 import logger from 'redux-logger';
+
+
+export const
+  IS_PLAYING = 0,
+  IS_GAME_OVER_LOSS = 1,
+  IS_GAME_OVER_WIN = 2;
+
 const initialState = {
   board: {
     grid: [],
@@ -8,7 +15,7 @@ const initialState = {
     height: 10,
   },
   initialBombs: 2,
-  gameOver: false,
+  gameStatus: IS_PLAYING,
 }
 
 const BUILD_BOARD = 'BUILD_BOARD';
@@ -74,7 +81,7 @@ const reducer = (state = initialState, action) => {
       }
     case LEFT_CLICK_CELL:
     case RIGHT_CLICK_CELL:
-      if (state.gameOver) {
+      if (state.gameStatus !== IS_PLAYING) {
         return state;
       }
       {
@@ -87,7 +94,7 @@ const reducer = (state = initialState, action) => {
           // make this one clicked so it'll display differently
           clickedCell.state = CLICKED_BOMB_CELL;
           return {
-            ...state, gameOver: true, board: {
+            ...state, gameStatus: IS_GAME_OVER_LOSS, board: {
               ...state.board, grid: state.board.grid.map((row, rowIdx) => row.map((cell, colIdx) => {
                 // make any bomb cells uncovered
                 if (cell.isBomb && cell.state === COVERED_CELL) {
@@ -98,6 +105,7 @@ const reducer = (state = initialState, action) => {
             }
           }
         }
+        // otherwise let's just cycle the cell and update the grid
         const newGrid = copyGrid(state.board.grid);
         const oldCell = state.board.grid[action.row][action.col];
         // now if we clicked on "empty" cell, floodfill outwards
@@ -112,7 +120,8 @@ const reducer = (state = initialState, action) => {
           ...state, board: {
             ...state.board, grid: newGrid,
           },
-          gameOver: isGameDone(newGrid, state.initialBombs),
+          // was this the last click?
+          gameStatus: isGameDone(newGrid, state.initialBombs) ? IS_GAME_OVER_WIN : state.gameStatus,
         }
       }
     default:
