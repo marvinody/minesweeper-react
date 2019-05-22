@@ -77,7 +77,7 @@ const reducer = (state = initialState, action) => {
         ...state, board: {
           ...state.board,
           grid: createBoardWithBombs(state.board.width, state.board.height, state.initialBombs)
-        },
+        }, gameStatus: IS_PLAYING,
       }
     case LEFT_CLICK_CELL:
     case RIGHT_CLICK_CELL:

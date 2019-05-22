@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { IS_GAME_OVER_LOSS, IS_GAME_OVER_WIN, IS_PLAYING } from '../store';
+import { buildBoard, IS_GAME_OVER_LOSS, IS_GAME_OVER_WIN, IS_PLAYING } from '../store';
 
 export default connect(
   state => ({
     status: state.gameStatus,
   }),
   dispatch => ({
-
+    build: () => dispatch(buildBoard()),
   })
 )(class Emote extends React.Component {
   render() {
@@ -23,7 +23,7 @@ export default connect(
         ;
     }
     return (
-      <div className={className}>
+      <div className={className} onClick={this.props.build}>
 
       </div>
     )
