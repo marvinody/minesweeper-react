@@ -15,7 +15,7 @@ const initialState = {
     width: 10,
     height: 10,
   },
-  initialBombs: 2,
+  initialBombs: 10,
   gameStatus: IS_PLAYING,
   time: 0,
 }
