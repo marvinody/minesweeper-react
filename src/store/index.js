@@ -1,6 +1,7 @@
 import { applyMiddleware, createStore } from "redux";
 import { composeWithDevTools } from 'redux-devtools-extension';
 import logger from 'redux-logger';
+import thunk from 'redux-thunk';
 
 
 export const
@@ -16,7 +17,13 @@ const initialState = {
   },
   initialBombs: 2,
   gameStatus: IS_PLAYING,
+  time: 0,
 }
+
+const TICK_TIMER = 'TICK_TIMER';
+export const tickTimer = () => ({
+  type: TICK_TIMER,
+})
 
 const BUILD_BOARD = 'BUILD_BOARD';
 export const buildBoard = () => ({
@@ -72,12 +79,23 @@ const cellCycler = (cell, type) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case TICK_TIMER:
+      if (state.gameStatus === IS_PLAYING) {
+        return {
+          ...state,
+          time: state.time + 1,
+        }
+      }
+      return state;
+
     case BUILD_BOARD:
       return {
         ...state, board: {
           ...state.board,
           grid: createBoardWithBombs(state.board.width, state.board.height, state.initialBombs)
-        }, gameStatus: IS_PLAYING,
+        },
+        gameStatus: IS_PLAYING,
+        time: 0,
       }
     case LEFT_CLICK_CELL:
     case RIGHT_CLICK_CELL:
@@ -210,6 +228,7 @@ const newArray = n => Array(n).fill(0).map(() => (
 export default createStore(reducer,
   composeWithDevTools(
     applyMiddleware(
+      thunk,
       logger
     )
   )
